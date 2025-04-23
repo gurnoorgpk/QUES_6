@@ -1,0 +1,28 @@
+name: ML CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image from Dockerfile_2
+      run: |
+        docker build -f Dockerfile_2 -t my-ml-model .
+
+    - name: Run model training inside Docker
+      run: |
+        docker run my-ml-model
